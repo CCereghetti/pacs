@@ -20,3 +20,7 @@ k=0.164
 hc=200.0e-6
 # Number of elements
 M=11
+# Name of output file
+outputname=outname.dat
+#Where to print the results (0=screen, 1=file, 2=both)
+outputwhere=2

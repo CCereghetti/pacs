@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "parameters.hpp"
 std::ostream & operator << (std::ostream & out,const parameters & p)
 {
@@ -13,5 +14,7 @@ std::ostream & operator << (std::ostream & out,const parameters & p)
   out<<"k= "<<p.k<<"\n";
   out<<"hc= "<<p.hc<<"\n";
   out<<"M= "<<p.M<<"\n\n";
+  out<<"outputname= "<<p.outputname<<"\n\n";
+  out<<"outputwhere= "<<p.outputwhere<<"\n\n";
   return out;
 }
