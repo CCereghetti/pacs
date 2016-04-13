@@ -65,21 +65,52 @@ int main(int argc, char** argv)
   const auto& M=param.M; // Number of grid elements
   const auto& outputname=param.outputname; //Name of the output file
   const auto& outputwhere=param.outputwhere; //Where to print the results (0=screen, 1=file, 2=both)
+  const auto& norm=param.norm;	//Say witch norm to use: (0: L², 1: H¹)
   
   //! Precomputed coefficient for adimensional form of equation
   const auto act=2.*(a1+a2)*hc*L*L/(k*a1*a2);
 
   // mesh size
   const auto h=1./M;
+ /*--------------------------------------
   
+  ////CHALLENGE 1.3////
+  //costruisco i tre vettori a,b,c (che sono le 3 diagonali della matrice), che userò per applicare Thomas
+  //a è la diagonale, b la sottodiagonale, c la sovradiagonale
+  vector<double> a(M,2+h*h*act), b(M-1,-1), c(M-1,-1);
+  vector<double> alfa(M), beta(M-1);
+  alfa[0]=a[0];
+  for (int i=1; i<M,i++) {
+  	beta[i-1]=b[i-1]/alfa[i-1];
+	alfa[i]=a[i]-beta[i]*c[i-1];  
+  }
+  //costruisco il vettore della soluzione b
+  vector<double> f(M,0.);
+  f[0]=To-Te;
+  //Risolvo Ly=f
+  vector<double> y(M);
+  y[0]=f[0];
+  for (int i=1; i<M; i++)
+  	y[i]=f[i]-beta[i]*y[i-1];
+  	
+  //Risolvo Ux=y
+  vector<double> x(M);
+  x[M-1]=y[M-1]/alfa[M-1];
+  for(int i=M-1; i>=0; i--)
+  	x[i]=(y[i])
+  	
+ -------------------------------------------------*/
+ 
   // Solution vector
-  std::vector<double> theta(M+1);
-  
+  vector<double> theta(M+1);
+  vector<double> dif(M+1);			//vettore contenente la differenza tra x_new-x_old
   // Gauss Siedel is initialised with a linear variation
   // of T
   
-  for(unsigned int m=0;m <= M;++m)
+  for(unsigned int m=0;m <= M;++m) {
      theta[m]=(1.-m*h)*(To-Te)/Te;
+     dif[m]=0;						//inizializzo il vettore delle differenze a zero
+     }
   
   // Gauss-Seidel
   // epsilon=||x^{k+1}-x^{k}||
@@ -87,6 +118,7 @@ int main(int argc, char** argv)
   
   int iter=0;
   double xnew, epsilon;
+  cout<<"I compute with the "<<norm<<" norm"<<endl;  
      do
        { epsilon=0.;
 
@@ -94,15 +126,28 @@ int main(int argc, char** argv)
          for(int m=1;m < M;m++)
          {   
 	   xnew  = (theta[m-1]+theta[m+1])/(2.+h*h*act);
-	   epsilon += (xnew-theta[m])*(xnew-theta[m]);
+	   dif[m]=xnew-theta[m];
 	   theta[m] = xnew;
          }
-
+     
+     //compute the L² norm
+      epsilon+=h/2*(dif[1]*dif[1]);
+      for (int m=2; m<M; m++) {
+      	epsilon+=h/2*(dif[m]*dif[m]+dif[m-1]*dif[m-1]);     //computo l'integrale col metodo dei trapezi
+     }
 	 //Last row
 	 xnew = theta[M-1]; 
-	 epsilon += (xnew-theta[M])*(xnew-theta[M]);
-	 theta[M]=  xnew; 
-
+	 dif[M]=xnew-theta[M];
+	 theta[M]=  xnew;
+	 epsilon+=h/2*(dif[M]*dif[M]+dif[M-1]*dif[M-1]);
+	
+	//Implement the H¹ norm, if needed
+	if(norm==1) {
+	epsilon+=1/(2*h)*(dif[1]*dif[1]);
+	for(int m=2; m<M+1; m++) {
+		epsilon+=1/(2*h)*(dif[m]*dif[m]+dif[m-1]*dif[m-1]);
+	}
+	}
 	 iter=iter+1;     
        }while((sqrt(epsilon) > toler) && (iter < itermax) );
 

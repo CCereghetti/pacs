@@ -16,5 +16,6 @@ std::ostream & operator << (std::ostream & out,const parameters & p)
   out<<"M= "<<p.M<<"\n\n";
   out<<"outputname= "<<p.outputname<<"\n\n";
   out<<"outputwhere= "<<p.outputwhere<<"\n\n";
+  out<<"norm= "<<p.norm<<"\n\n";
   return out;
 }

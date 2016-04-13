@@ -28,6 +28,8 @@ struct parameters
   std::string outputname;
   //!Where to print the results
   int outputwhere;
+  //Norm to use
+  int norm;
   
   //! Constructor takes default values
   parameters():
@@ -42,7 +44,8 @@ struct parameters
     hc(1.e-6*200.),
     M(100),
     outputname("outname.dat"),
-    outputwhere(2)
+    outputwhere(2),
+  	norm(1)
   {}
 };
 //! Prints parameters
