@@ -30,6 +30,8 @@ struct parameters
   int outputwhere;
   //Norm to use
   int norm;
+
+
   
   //! Constructor takes default values
   parameters():
