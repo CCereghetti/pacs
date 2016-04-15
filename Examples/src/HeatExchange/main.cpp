@@ -51,8 +51,6 @@ int main(int argc, char** argv)
   // Transfer parameters to local variables
   // I use references to save memory (not really an issue here, it is just
   // to show a possible  use of references)
-  const int& itermax= param.itermax; //max number of iteration for Gauss-Siedel
-  const double& toler=param.toler; // Tolerance for stopping criterion
   // Here I use auto (remember that you need const and & if you want constant references)
   const auto& L= param.L;  // Bar length
   const auto& a1=param.a1; // First longitudinal dimension
@@ -64,7 +62,6 @@ int main(int argc, char** argv)
   const auto& M=param.M; // Number of grid elements
   const auto& outputname=param.outputname; //Name of the output file
   const auto& outputwhere=param.outputwhere; //Where to print the results (0=screen, 1=file, 2=both)
-  const auto& norm=param.norm; //Say witch norm to use: (0: L², 1: H¹)
 
   
   //! Precomputed coefficient for adimensional form of equation
@@ -75,7 +72,6 @@ int main(int argc, char** argv)
   
   
   ////CHALLENGE 1.3////
-  cout<<"You are running challenge 1.3: Thomas' algorithm"<<endl;
   
   //costruisco i tre vettori a,b,c (che sono le 3 diagonali della matrice), che userò per applicare Thomas
   //a è la diagonale, b la sottodiagonale, c la sovradiagonale
