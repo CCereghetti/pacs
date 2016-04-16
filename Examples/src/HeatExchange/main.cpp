@@ -6,6 +6,11 @@
 #include "readParameters.hpp"
 #include "GetPot.hpp"
 #include "gnuplot-iostream.hpp"// interface with gnuplot
+/*SPIEGAZIONE: 
+- per la Challenge 1.2 runnare il file run.sh, che contiene due file con i parametri di imput differenti: variano
+sia il nome di uscita del file, che la norma da utilizzare. In questo modo posso confrontare il numero di iterazioni
+*/
+
 /*!
   @file main.cpp
   @brief Temperature distribution in a 1D bar.
